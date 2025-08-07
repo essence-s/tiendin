@@ -1,0 +1,135 @@
+[
+  {
+    "id": 1,
+    "name": "Auriculares Bluetooth SkySound",
+    "slug": "auriculares-bluetooth-skysound",
+    "sku": "ASB-001-UNI",
+    "price": 79.99,
+    "stock": 120,
+    "categories": ["Electrónica", "Audio", "Accesorios"],
+    "images": [
+      {
+        "url": "/placeholder.svg?height=400&width=400",
+        "alt": "Auriculares SkySound vista frontal"
+      },
+      { "url": "/placeholder.svg?height=400&width=400", "alt": "Detalle almohadillas SkySound" }
+    ],
+    "description": "Auriculares inalámbricos con cancelación de ruido y hasta 20 horas de batería.",
+    "dimensions": { "width_cm": 15, "height_cm": 18, "depth_mm": 50 },
+    "weight_g": 250,
+    "orientation": "horizontal",
+    "effect": "estéreo",
+    "material": "plástico y espuma",
+    "resolution_dpi": 0,
+    "shipping": {
+      "free": true,
+      "weight_kg": 0.25,
+      "dimensions_cm": { "length": 20, "width": 18, "height": 8 }
+    },
+    "variantes": ["negro", "azul", "blanco"]
+  },
+  {
+    "id": 2,
+    "name": "Mochila Urban Explorer",
+    "slug": "mochila-urban-explorer",
+    "sku": "MUE-245-NT",
+    "price": 49.5,
+    "stock": 75,
+    "categories": ["Viaje", "Regreso a clases", "Moda"],
+    "images": [
+      { "url": "/placeholder.svg?height=400&width=400", "alt": "Mochila Urban Explorer frontal" },
+      { "url": "/placeholder.svg?height=400&width=400", "alt": "Detalle bolsillos Urban Explorer" }
+    ],
+    "description": "Mochila resistente al agua con múltiples compartimentos y carga USB integrada.",
+    "dimensions": { "width_cm": 30, "height_cm": 45, "depth_mm": 20 },
+    "weight_g": 800,
+    "orientation": "vertical",
+    "effect": "ergonómico",
+    "material": "nylon",
+    "resolution_dpi": 0,
+    "shipping": {
+      "free": false,
+      "weight_kg": 0.85,
+      "dimensions_cm": { "length": 50, "width": 35, "height": 10 }
+    },
+    "variantes": ["gris", "verde oliva", "negro"]
+  },
+  {
+    "id": 3,
+    "name": "Set de Tazas CoffeeTime",
+    "slug": "set-tazas-coffeetime",
+    "sku": "CTM-SET-03",
+    "price": 24.9,
+    "stock": 200,
+    "categories": ["Hogar", "Cocina", "Regalos"],
+    "images": [
+      { "url": "/placeholder.svg?height=400&width=400", "alt": "Taza CoffeeTime vista frontal" },
+      { "url": "/placeholder.svg?height=400&width=400", "alt": "Detalle asa Taza CoffeeTime" }
+    ],
+    "description": "Pack de 3 tazas de cerámica de 300 ml con diseño minimalista y aptas para microondas.",
+    "dimensions": { "width_cm": 8, "height_cm": 10, "depth_mm": 8 },
+    "weight_g": 450,
+    "orientation": "vertical",
+    "effect": "brillante",
+    "material": "cerámica",
+    "resolution_dpi": 0,
+    "shipping": {
+      "free": false,
+      "weight_kg": 0.5,
+      "dimensions_cm": { "length": 12, "width": 12, "height": 12 }
+    },
+    "variantes": ["blanco", "negro", "gris claro"]
+  },
+  {
+    "id": 4,
+    "name": "Lámpara LED FlexLine",
+    "slug": "lampara-led-flexline",
+    "sku": "LLF-450-WW",
+    "price": 34.75,
+    "stock": 60,
+    "categories": ["Decoración", "Iluminación", "Oficina"],
+    "images": [
+      { "url": "/placeholder.svg?height=400&width=400", "alt": "Lámpara FlexLine encendida" },
+      { "url": "/placeholder.svg?height=400&width=400", "alt": "Detalle brazo flexible FlexLine" }
+    ],
+    "description": "Lámpara de escritorio con brazo articulado y luz cálida regulable.",
+    "dimensions": { "width_cm": 10, "height_cm": 45, "depth_mm": 10 },
+    "weight_g": 600,
+    "orientation": "vertical",
+    "effect": "ajustable",
+    "material": "metal y silicona",
+    "resolution_dpi": 0,
+    "shipping": {
+      "free": true,
+      "weight_kg": 0.65,
+      "dimensions_cm": { "length": 50, "width": 15, "height": 15 }
+    },
+    "variantes": ["blanco", "negro"]
+  },
+  {
+    "id": 5,
+    "name": "Teclado Mecánico ProType",
+    "slug": "teclado-mecanico-protype",
+    "sku": "TMP-KEY-87",
+    "price": 89.0,
+    "stock": 40,
+    "categories": ["Informática", "Gaming", "Accesorios"],
+    "images": [
+      { "url": "/placeholder.svg?height=400&width=400", "alt": "Teclado ProType vista cenital" },
+      { "url": "/placeholder.svg?height=400&width=400", "alt": "Detalle teclas ProType" }
+    ],
+    "description": "Teclado mecánico compacto con switches táctiles y retroiluminación RGB.",
+    "dimensions": { "width_cm": 35, "height_cm": 5, "depth_mm": 12 },
+    "weight_g": 700,
+    "orientation": "horizontal",
+    "effect": "RGB",
+    "material": "plástico ABS",
+    "resolution_dpi": 0,
+    "shipping": {
+      "free": false,
+      "weight_kg": 0.75,
+      "dimensions_cm": { "length": 40, "width": 15, "height": 8 }
+    },
+    "variantes": ["switch rojo", "switch azul", "switch marrón"]
+  }
+]
