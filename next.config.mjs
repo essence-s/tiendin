@@ -1,8 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  env: {
-    // APP_URL: 'https://web.vercel.app/'
-  },
+  env: {},
   eslint: {
     ignoreDuringBuilds: true,
   },
