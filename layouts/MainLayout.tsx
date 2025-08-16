@@ -7,11 +7,11 @@ interface MainLayoutProps {
 }
 
 export default async function MainLayout({ children }: MainLayoutProps) {
-  // const categories = await getAllCategories();
+  const categories = await getAllCategories();
 
   return (
     <div className="min-h-screen bg-white">
-      {/* <Header categories={categories} /> */}
+      <Header categories={categories} />
       <main>{children}</main>
       <Footer />
     </div>
