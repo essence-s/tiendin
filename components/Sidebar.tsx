@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { getAllCategories } from '@/lib/products';
+import { useProducts } from '@/lib/products-context';
 
 interface SidebarProps {
   onCategorySelect?: () => void;
@@ -11,6 +11,8 @@ interface SidebarProps {
 export default function Sidebar({ onCategorySelect }: SidebarProps) {
   const searchParams = useSearchParams();
   const currentCategory = searchParams.get('category') || '';
+
+  const { getAllCategories } = useProducts();
   const categories = getAllCategories();
 
   const handleCategoryClick = () => {

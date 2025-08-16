@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import ProductPageClient from './ProductPageClient';
-import { getProductBySlug, getAllProducts } from '@/lib/products';
+import { getProductBySlug, getAllProducts } from '@/lib/products-action';
 
 interface ProductPageProps {
   params: {
@@ -11,7 +11,7 @@ interface ProductPageProps {
 
 // Generate static params for all products
 export async function generateStaticParams() {
-  const products = getAllProducts();
+  const products = await getAllProducts();
   return products.map((product) => ({
     slug: product.slug,
   }));
@@ -19,7 +19,7 @@ export async function generateStaticParams() {
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
-  const product = getProductBySlug(params.slug);
+  const product = await getProductBySlug(params.slug);
 
   if (!product) {
     return {
@@ -47,10 +47,10 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
       description: product.description,
       images: [
         {
-          url: mainImage?.url || '/placeholder.svg',
+          url: mainImage || '/placeholder.svg',
           width: 400,
           height: 400,
-          alt: mainImage?.alt || product.name,
+          alt: product.name,
         },
       ],
       type: 'website',
@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
       card: 'summary_large_image',
       title: product.name,
       description: product.description,
-      images: [mainImage?.url || '/placeholder.svg'],
+      images: [mainImage || '/placeholder.svg'],
     },
     alternates: {
       canonical: `/product/${product.slug}`,
@@ -67,8 +67,8 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   };
 }
 
-export default function ProductPage({ params }: ProductPageProps) {
-  const product = getProductBySlug(params.slug);
+export default async function ProductPage({ params }: ProductPageProps) {
+  const product = await getProductBySlug(params.slug);
 
   if (!product) {
     notFound();
@@ -80,7 +80,7 @@ export default function ProductPage({ params }: ProductPageProps) {
     '@type': 'Product',
     name: product.name,
     description: product.description,
-    image: product.images.map((img) => img.url),
+    image: product.images,
     sku: product.sku,
     brand: {
       '@type': 'Brand',

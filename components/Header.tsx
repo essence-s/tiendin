@@ -1,18 +1,16 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { ShoppingCart, Menu, X } from 'lucide-react';
 import { useCart } from '@/lib/cart-context';
-import { getAllCategories } from '@/lib/products';
-import SearchDropdown from './SearchDropdown';
+import { Menu, ShoppingCart, X } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
 import CartSidebar from './CartSidebar';
+import SearchDropdown from './SearchDropdown';
 
-export default function Header() {
+export default function Header({ categories }: { categories: string[] }) {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { getTotalItems } = useCart();
-  const categories = getAllCategories();
 
   return (
     <>
@@ -24,18 +22,18 @@ export default function Header() {
               <Link href="/" className="flex items-center">
                 <span className="text-sm font-medium tracking-wide">PRINT STORE</span>
               </Link>
-              
+
               <nav className="hidden md:flex items-center space-x-6">
-                <Link 
-                  href="/search" 
+                <Link
+                  href="/search"
                   className="text-sm text-neutral-500 hover:text-black transition-colors"
                 >
                   All
                 </Link>
                 {categories.slice(0, 4).map((category) => (
-                  <Link 
+                  <Link
                     key={category}
-                    href={`/search?category=${encodeURIComponent(category)}`} 
+                    href={`/search?category=${encodeURIComponent(category)}`}
                     className="text-sm text-neutral-500 hover:text-black transition-colors"
                   >
                     {category}
@@ -101,7 +99,7 @@ export default function Header() {
                 <div className="px-2">
                   <SearchDropdown onClose={() => setIsMobileMenuOpen(false)} />
                 </div>
-                
+
                 {/* Mobile Navigation Links */}
                 <nav className="flex flex-col space-y-2">
                   <Link

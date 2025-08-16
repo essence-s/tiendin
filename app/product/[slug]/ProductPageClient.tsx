@@ -13,12 +13,13 @@ import {
   Share2,
   Heart,
 } from 'lucide-react';
-import { getAllProducts } from '@/lib/products';
+import { getAllProducts } from '@/lib/products-action';
 import { useCart } from '@/lib/cart-context';
 import { formatPrice, formatPriceWithCurrency, getCurrentCurrency } from '@/lib/currency';
 import { Button } from '@/components/ui/button';
 import ProductCard from '@/components/ProductCard';
 import { Product } from '@/lib/types';
+import { useProducts } from '@/lib/products-context';
 
 interface ProductPageClientProps {
   product: Product;
@@ -31,6 +32,7 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
   const { addToCart } = useCart();
   const currency = getCurrentCurrency();
 
+  const { getAllProducts } = useProducts();
   const allProducts = getAllProducts();
   const relatedProducts = allProducts
     .filter(
@@ -108,8 +110,8 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
             <div className="relative w-full max-w-lg">
               <div className="aspect-square relative overflow-hidden bg-neutral-50 rounded-lg">
                 <Image
-                  src={product.images[selectedImage]?.url || '/placeholder.svg'}
-                  alt={product.images[selectedImage]?.alt || product.name}
+                  src={product.images[selectedImage] || '/placeholder.svg'}
+                  alt={product.name}
                   fill
                   className="object-cover"
                   priority
@@ -152,8 +154,8 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
                     }`}
                   >
                     <Image
-                      src={image.url || '/placeholder.svg'}
-                      alt={image.alt}
+                      src={image || '/placeholder.svg'}
+                      alt={product.name}
                       fill
                       className="object-cover"
                       sizes="64px"

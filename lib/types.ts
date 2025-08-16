@@ -27,7 +27,8 @@ export interface Product {
   price: number;
   stock: number;
   categories: string[];
-  images: ProductImage[];
+  images: string[];
+  // images: ProductImage[];
   description: string;
   dimensions: ProductDimensions;
   weight_g: number;
@@ -52,6 +53,19 @@ export interface CartContextType {
   clearCart: () => void;
   getTotalPrice: () => number;
   getTotalItems: () => number;
+}
+
+export interface ProductsContextType {
+  products: Product[];
+  getAllProducts: () => Product[];
+  getProductById: (id: number) => Product | undefined;
+  getProductBySlug: (slug: string) => Product | undefined;
+  getProductsByCategory: (category: string) => Product[];
+  getAllCategories: () => string[];
+  searchProducts: (query: string) => Product[];
+  getSearchSuggestions: (query: string, limit: number) => Product[];
+  generateSlug: (name: string) => string;
+  getSitemapProducts: () => void;
 }
 
 export interface SearchResult {

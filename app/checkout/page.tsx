@@ -265,8 +265,8 @@ export default function CheckoutPage() {
                 {items.map((item) => (
                   <div key={item.product.id} className="flex items-center space-x-3 sm:space-x-4">
                     <Image
-                      src={item.product.images[0]?.url || '/placeholder.svg'}
-                      alt={item.product.images[0]?.alt || item.product.name}
+                      src={item.product.images[0] || '/placeholder.svg'}
+                      alt={item.product.name}
                       width={50}
                       height={50}
                       className="sm:w-[60px] sm:h-[60px] rounded-md object-cover flex-shrink-0"

@@ -4,6 +4,7 @@ import './globals.css';
 import { CartProvider } from '@/lib/cart-context';
 import { getCurrentCurrency } from '@/lib/currency';
 import MainLayout from '@/layouts/MainLayout';
+import { ProductsProvider } from '@/lib/products-context';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -71,7 +72,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={inter.className}>
         <CartProvider>
-          <MainLayout>{children}</MainLayout>
+          <ProductsProvider>
+            <MainLayout>{children}</MainLayout>
+          </ProductsProvider>
         </CartProvider>
       </body>
     </html>

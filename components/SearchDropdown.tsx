@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { getSearchSuggestions } from '@/lib/products';
+import { Search, X } from 'lucide-react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 import { formatPrice } from '@/lib/currency';
+import { useProducts } from '@/lib/products-context';
 import { Product } from '@/lib/types';
 
 interface SearchDropdownProps {
@@ -22,6 +21,8 @@ export default function SearchDropdown({ onClose }: SearchDropdownProps) {
   const router = useRouter();
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const { getSearchSuggestions } = useProducts();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -156,8 +157,8 @@ export default function SearchDropdown({ onClose }: SearchDropdownProps) {
               >
                 <div className="relative w-12 h-12 bg-neutral-100 rounded-md overflow-hidden flex-shrink-0">
                   <Image
-                    src={product.images[0]?.url || '/placeholder.svg'}
-                    alt={product.images[0]?.alt || product.name}
+                    src={product.images[0] || '/placeholder.svg'}
+                    alt={product.name}
                     fill
                     className="object-cover"
                     sizes="48px"

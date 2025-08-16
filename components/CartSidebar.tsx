@@ -53,8 +53,8 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                       className="flex items-center space-x-4 p-4 border rounded-lg"
                     >
                       <Image
-                        src={item.product.images[0]?.url || '/placeholder.svg'}
-                        alt={item.product.images[0]?.alt || item.product.name}
+                        src={item.product.images[0] || '/placeholder.svg'}
+                        alt={item.product.name}
                         width={80}
                         height={80}
                         className="rounded-md object-cover"

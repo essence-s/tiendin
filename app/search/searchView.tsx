@@ -1,26 +1,29 @@
 'use client';
 export const dynamic = 'force-dynamic';
 
-import { useState, useMemo } from 'react';
+import { Filter } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
-import { Filter, X } from 'lucide-react';
-import { getAllProducts } from '@/lib/products';
-import { Product } from '@/lib/types';
+import { use, useMemo, useState } from 'react';
 import ProductCard from '@/components/ProductCard';
 import Sidebar from '@/components/Sidebar';
 import SortDropdown from '@/components/SortDropdown';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Product } from '@/lib/types';
 import Link from 'next/link';
 
-export default function SearchView() {
+export default function SearchView({
+  allProducts: promiseAllProducts,
+}: {
+  allProducts: Promise<Product[]>;
+}) {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
   const category = searchParams.get('category') || '';
   const [sortBy, setSortBy] = useState('relevance');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const allProducts = getAllProducts();
+  const allProducts = use(promiseAllProducts);
 
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = allProducts;

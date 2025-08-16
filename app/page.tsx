@@ -1,10 +1,11 @@
-import { getAllProducts } from '@/lib/products';
+import { getAllProducts } from '@/lib/products-action';
 import ProductCard from '@/components/ProductCard';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+// import { useProducts } from '@/lib/products-context';
 
-export default function HomePage() {
-  const products = getAllProducts();
+export default async function HomePage() {
+  const products = await getAllProducts();
   const featuredProducts = products.slice(0, 6);
 
   return (
