@@ -1,14 +1,17 @@
+import { getDataSheets } from './getdatasheets';
 import { Product } from './types';
 
-const vercelUrl = process.env.VERCEL_URL;
-const baseUrl = vercelUrl ? `https://${vercelUrl}` : 'http://localhost:3000';
+// const vercelUrl = process.env.VERCEL_URL;
+// const baseUrl = vercelUrl ? `https://${vercelUrl}` : 'http://localhost:3000';
 
 export async function fetchProducts(): Promise<Product[]> {
-  console.log(baseUrl);
-  const res = await fetch(`${baseUrl}/api/products`);
-  const data = res.json();
-  console.log(data);
-  return data;
+  // console.log(baseUrl);
+  // const res = await fetch(`http://localhost:3000/api/products`);
+  const res = await getDataSheets();
+  // const res = await fetch(`${baseUrl}/api/products`);
+  // const data = res.json();
+  // console.log(data);
+  return res;
 }
 
 export async function getAllProducts(): Promise<Product[]> {
