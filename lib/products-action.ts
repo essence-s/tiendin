@@ -1,4 +1,4 @@
-import { getDataSheets } from './getdatasheets';
+// import { getDataSheets } from './getdatasheets';
 import { Product } from './types';
 
 // const vercelUrl = process.env.VERCEL_URL;
@@ -6,12 +6,12 @@ import { Product } from './types';
 
 export async function fetchProducts(): Promise<Product[]> {
   // console.log(baseUrl);
-  // const res = await fetch(`http://localhost:3000/api/products`);
-  const res = await getDataSheets();
+  const res = await fetch(`https://syhc.vercel.app/api/products`);
+  // const res = await getDataSheets();
   // const res = await fetch(`${baseUrl}/api/products`);
-  // const data = res.json();
+  const data = res.json();
   // console.log(data);
-  return res;
+  return data;
 }
 
 export async function getAllProducts(): Promise<Product[]> {
