@@ -1,7 +1,17 @@
 export interface ProductImage {
   url: string;
+  type: 'image';
   alt: string;
 }
+export interface ProductVideo {
+  url: string;
+  thumbnail: string;
+  alt: string;
+  type: 'video';
+  duration?: number; // in seconds
+}
+
+export type ProductMedia = ProductImage | ProductVideo;
 
 export interface ProductDimensions {
   width_cm: number;
@@ -29,6 +39,7 @@ export interface Product {
   categories: string[];
   images: string[];
   // images: ProductImage[];
+  videos: string[];
   description: string;
   dimensions: ProductDimensions;
   weight_g: number;

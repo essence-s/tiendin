@@ -1,36 +1,27 @@
 'use client';
 
-import { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import {
-  ArrowLeft,
-  ChevronLeft,
-  ChevronDown,
-  ChevronRight,
-  Plus,
-  Minus,
-  Share2,
-  Heart,
-} from 'lucide-react';
-import { getAllProducts } from '@/lib/products-action';
-import { useCart } from '@/lib/cart-context';
-import { formatPrice, formatPriceWithCurrency, getCurrentCurrency } from '@/lib/currency';
-import { Button } from '@/components/ui/button';
+import MediaThumbnails from '@/components/MediaThumbnails';
+import MediaViewer from '@/components/MediaViewer';
 import ProductCard from '@/components/ProductCard';
-import { Product } from '@/lib/types';
+import { Button } from '@/components/ui/button';
+import { useCart } from '@/lib/cart-context';
+import { formatPriceWithCurrency, getCurrentCurrency } from '@/lib/currency';
 import { useProducts } from '@/lib/products-context';
+import { Product, ProductImage, ProductMedia, ProductVideo } from '@/lib/types';
+import { ArrowLeft, ChevronDown, Heart, Minus, Plus, Share2 } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
 
 interface ProductPageClientProps {
   product: Product;
 }
 
 export default function ProductPageClient({ product }: ProductPageClientProps) {
-  const [selectedImage, setSelectedImage] = useState(0);
+  const [selectedMediaIndex, setSelectedMediaIndex] = useState(0);
+
   const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const { addToCart } = useCart();
-  const currency = getCurrentCurrency();
 
   const { getAllProducts } = useProducts();
   const allProducts = getAllProducts();
@@ -42,14 +33,6 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
 
   const handleAddToCart = () => {
     addToCart(product, quantity);
-  };
-
-  const nextImage = () => {
-    setSelectedImage((prev) => (prev + 1) % product.images.length);
-  };
-
-  const prevImage = () => {
-    setSelectedImage((prev) => (prev - 1 + product.images.length) % product.images.length);
   };
 
   const handleShare = async () => {
@@ -68,6 +51,21 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
       alert('Enlace copiado al portapapeles');
     }
   };
+
+  const mediaItems: ProductMedia[] = [
+    ...product?.images.map<ProductImage>((image) => ({
+      url: image,
+      type: 'image',
+      alt: product.name,
+    })),
+    ...product?.videos.map<ProductVideo>((video) => ({
+      url: video,
+      thumbnail: product.images[0],
+      alt: product.name + 'video',
+      type: 'video',
+      // duration: 10,
+    })),
+  ];
 
   return (
     <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
@@ -107,63 +105,18 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-20">
           {/* Product Images */}
           <div className="flex flex-col items-center">
-            <div className="relative w-full max-w-lg">
-              <div className="aspect-square relative overflow-hidden bg-neutral-50 rounded-lg">
-                <Image
-                  src={product.images[selectedImage] || '/placeholder.svg'}
-                  alt={product.name}
-                  fill
-                  className="object-cover"
-                  priority
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-              </div>
+            <MediaViewer
+              media={mediaItems}
+              selectedIndex={selectedMediaIndex}
+              onIndexChange={setSelectedMediaIndex}
+              productName={product.name}
+            />
 
-              {/* Navigation Arrows */}
-              {product.images.length > 1 && (
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                  <button
-                    onClick={prevImage}
-                    className="w-8 h-8 sm:w-10 sm:h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-sm transition-colors"
-                    aria-label="Imagen anterior"
-                  >
-                    <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 text-neutral-600" />
-                  </button>
-                  <button
-                    onClick={nextImage}
-                    className="w-8 h-8 sm:w-10 sm:h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-sm transition-colors"
-                    aria-label="Siguiente imagen"
-                  >
-                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-neutral-600" />
-                  </button>
-                </div>
-              )}
-            </div>
-
-            {/* Thumbnails */}
-            {product.images.length > 1 && (
-              <div className="mt-4 sm:mt-6 flex space-x-2 overflow-x-auto pb-2">
-                {product.images.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(index)}
-                    className={`relative w-12 h-12 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-neutral-50 border-2 transition-colors flex-shrink-0 ${
-                      selectedImage === index
-                        ? 'border-blue-500'
-                        : 'border-transparent hover:border-neutral-300'
-                    }`}
-                  >
-                    <Image
-                      src={image || '/placeholder.svg'}
-                      alt={product.name}
-                      fill
-                      className="object-cover"
-                      sizes="64px"
-                    />
-                  </button>
-                ))}
-              </div>
-            )}
+            <MediaThumbnails
+              media={mediaItems}
+              selectedIndex={selectedMediaIndex}
+              onSelect={setSelectedMediaIndex}
+            />
           </div>
 
           {/* Product Info */}
