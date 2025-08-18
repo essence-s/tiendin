@@ -4,11 +4,11 @@ import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 const sortOptions = [
-  { value: 'relevance', label: 'Relevance' },
-  { value: 'trending', label: 'Trending' },
-  { value: 'latest', label: 'Latest arrivals' },
-  { value: 'price-low', label: 'Price: Low to high' },
-  { value: 'price-high', label: 'Price: High to low' },
+  { value: 'relevance', label: 'Relevancia' },
+  { value: 'trending', label: 'Tendencias' },
+  { value: 'latest', label: 'Últimas novedades' },
+  { value: 'price-low', label: 'Precio: De menor a mayor' },
+  { value: 'price-high', label: 'Precio: De mayor a menor' },
 ];
 
 interface SortDropdownProps {
@@ -24,7 +24,7 @@ export default function SortDropdown({ onSortChange, currentSort }: SortDropdown
 
   return (
     <div className="relative">
-      <div className="text-xs sm:text-sm text-neutral-500 mb-2">Sort by</div>
+      <div className="text-xs sm:text-sm text-neutral-500 mb-2">Ordenar por</div>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center justify-between w-full min-w-[140px] sm:min-w-[160px] px-3 py-2 text-xs sm:text-sm border border-neutral-200 rounded-md bg-white hover:border-neutral-300 transition-colors"

@@ -67,13 +67,13 @@ export default function SearchView({
 
   const getPageTitle = () => {
     if (query && category) {
-      return `"${query}" in ${category}`;
+      return `"${query}" en ${category}`;
     } else if (query) {
-      return `Search results for "${query}"`;
+      return `Resultados de la búsqueda "${query}"`;
     } else if (category) {
       return category;
     }
-    return 'All Products';
+    return 'Todos los productos';
   };
 
   return (
@@ -118,10 +118,10 @@ export default function SearchView({
                 {getPageTitle()}
               </h1>
               <p className="text-sm text-neutral-500">
-                {filteredAndSortedProducts.length} product
+                {filteredAndSortedProducts.length} producto
                 {filteredAndSortedProducts.length !== 1 ? 's' : ''}
-                {query && <span className="hidden sm:inline"> matching "{query}"</span>}
-                {category && <span className="hidden sm:inline"> in {category}</span>}
+                {query && <span className="hidden sm:inline"> coincidentes "{query}"</span>}
+                {category && <span className="hidden sm:inline"> en {category}</span>}
               </p>
 
               {/* Mobile query/category info */}
@@ -129,12 +129,12 @@ export default function SearchView({
                 <div className="flex flex-wrap gap-2 mt-2 sm:hidden">
                   {query && (
                     <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
-                      Search: "{query}"
+                      Buscar: "{query}"
                     </span>
                   )}
                   {category && (
                     <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
-                      Category: {category}
+                      Categoría: {category}
                     </span>
                   )}
                 </div>
@@ -151,10 +151,12 @@ export default function SearchView({
           {filteredAndSortedProducts.length === 0 ? (
             <div className="text-center py-12 sm:py-16">
               <div className="max-w-md mx-auto">
-                <p className="text-neutral-500 mb-4 text-sm sm:text-base">No products found.</p>
+                <p className="text-neutral-500 mb-4 text-sm sm:text-base">
+                  No se han encontrado productos.
+                </p>
                 {(query || category) && (
                   <Button asChild variant="outline">
-                    <Link href="/search">View all products</Link>
+                    <Link href="/search">Ver todos los productos</Link>
                   </Button>
                 )}
               </div>

@@ -23,7 +23,7 @@ export default function Sidebar({ onCategorySelect }: SidebarProps) {
     <aside className="w-full lg:w-64 flex-shrink-0">
       <div className="space-y-6">
         <div>
-          <h3 className="text-sm font-medium text-neutral-900 mb-4">Collections</h3>
+          <h3 className="text-sm font-medium text-neutral-900 mb-4">Colecciones</h3>
           <ul className="space-y-3">
             <li>
               <Link
@@ -33,7 +33,7 @@ export default function Sidebar({ onCategorySelect }: SidebarProps) {
                   !currentCategory ? 'text-black font-medium' : 'text-neutral-500 hover:text-black'
                 }`}
               >
-                All
+                Todos
               </Link>
             </li>
             {categories.map((category) => (

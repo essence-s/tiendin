@@ -7,6 +7,8 @@ import { Product } from './types';
 export async function fetchProducts(): Promise<Product[]> {
   // console.log(baseUrl);
   const res = await fetch(`https://syhc.vercel.app/api/products`);
+  // const res = await fetch(`http://localhost:3000/api/products`);
+  // console.log(res);
   // const res = await getDataSheets();
   // const res = await fetch(`${baseUrl}/api/products`);
   const data = res.json();
@@ -53,8 +55,7 @@ export async function searchProducts(query: string): Promise<Product[]> {
   return products.filter(
     (product) =>
       product.name.toLowerCase().includes(lowercaseQuery) ||
-      // product.description.toLowerCase().includes(lowercaseQuery) ||
-
+      product.description.toLowerCase().includes(lowercaseQuery) ||
       // product.categories.some((category) => category.toLowerCase().includes(lowercaseQuery)) ||
       product.categories.some((category) => category.toLowerCase().includes(lowercaseQuery))
 

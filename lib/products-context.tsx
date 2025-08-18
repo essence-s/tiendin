@@ -54,8 +54,7 @@ export function ProductsProvider({ children }: { children: React.ReactNode }) {
     return productsData.filter(
       (product) =>
         product.name.toLowerCase().includes(lowercaseQuery) ||
-        // product.description.toLowerCase().includes(lowercaseQuery) ||
-
+        product.description.toLowerCase().includes(lowercaseQuery) ||
         // product.categories.some((category) => category.toLowerCase().includes(lowercaseQuery)) ||
         product.categories.some((category) => category.toLowerCase().includes(lowercaseQuery))
 

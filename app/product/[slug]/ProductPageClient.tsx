@@ -165,29 +165,29 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
 
             {/* Product Details - Collapsible on mobile */}
             <div className="space-y-2 text-sm">
-              <details className="sm:hidden group">
+              <details open className="sm:hidden group">
                 <summary className="cursor-pointer font-medium text-black mb-2 flex items-center justify-between">
                   Detalles del producto
                   <ChevronDown className="w-4 h-4 transition-transform group-open:rotate-180" />
                 </summary>
                 <div className="space-y-2 pl-4 border-l-2 border-neutral-100">
                   <div className="flex justify-between">
-                    <span className="text-neutral-500">Dimensions:</span>
+                    <span className="text-neutral-500">Dimensiones:</span>
                     <span className="text-neutral-900">
                       {product.dimensions.width_cm} × {product.dimensions.height_cm} cm
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-neutral-500">Material:</span>
-                    <span className="text-neutral-900">{product.material}</span>
+                    <span className="text-neutral-900 text-end">{product.material}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-neutral-500">Resolution:</span>
+                    <span className="text-neutral-500">Resolución:</span>
                     <span className="text-neutral-900">{product.resolution_dpi} DPI</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-neutral-500">Weight:</span>
-                    <span className="text-neutral-900">{product.weight_g}g</span>
+                    <span className="text-neutral-500">Efecto:</span>
+                    <span className="text-neutral-900">3D flip</span>
                   </div>
                   {/* <div className="flex justify-between">
                     <span className="text-neutral-500">Effect:</span>
@@ -205,7 +205,7 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
               {/* Desktop details */}
               <div className="hidden sm:block space-y-2">
                 <div className="flex justify-between">
-                  <span className="text-neutral-500">Dimensions:</span>
+                  <span className="text-neutral-500">Dimensiones:</span>
                   <span className="text-neutral-900">
                     {product.dimensions.width_cm} × {product.dimensions.height_cm} cm
                   </span>
@@ -215,12 +215,12 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
                   <span className="text-neutral-900">{product.material}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-neutral-500">Resolution:</span>
+                  <span className="text-neutral-500">Resolución:</span>
                   <span className="text-neutral-900">{product.resolution_dpi} DPI</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-neutral-500">Weight:</span>
-                  <span className="text-neutral-900">{product.weight_g}g</span>
+                  <span className="text-neutral-500">Efecto:</span>
+                  <span className="text-neutral-900">3D flip</span>
                 </div>
                 {/* <div className="flex justify-between">
                   <span className="text-neutral-500">Effect:</span>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useCart } from '@/lib/cart-context';
+import { getSiteInfo } from '@/lib/site-config';
 import { Menu, ShoppingCart, X } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -11,6 +12,7 @@ export default function Header({ categories }: { categories: string[] }) {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { getTotalItems } = useCart();
+  const siteInfo = getSiteInfo();
 
   return (
     <>
@@ -20,7 +22,7 @@ export default function Header({ categories }: { categories: string[] }) {
             {/* Logo and Navigation */}
             <div className="flex items-center space-x-8">
               <Link href="/" className="flex items-center">
-                <span className="text-sm font-medium tracking-wide">PRINT STORE</span>
+                <span className="text-sm font-medium tracking-wide">{siteInfo.name}</span>
               </Link>
 
               <nav className="hidden md:flex items-center space-x-6">
@@ -28,7 +30,7 @@ export default function Header({ categories }: { categories: string[] }) {
                   href="/search"
                   className="text-sm text-neutral-500 hover:text-black transition-colors"
                 >
-                  All
+                  Todos
                 </Link>
                 {categories.slice(0, 4).map((category) => (
                   <Link
@@ -42,7 +44,7 @@ export default function Header({ categories }: { categories: string[] }) {
                 {categories.length > 4 && (
                   <div className="relative group">
                     <button className="text-sm text-neutral-500 hover:text-black transition-colors">
-                      More
+                      Mas
                     </button>
                     <div className="absolute top-full left-0 mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[150px]">
                       <div className="py-2">
