@@ -370,7 +370,7 @@ export default function MediaViewer({
       onMouseLeave={handleContainerMouseLeave}
     >
       <div
-        className={`relative overflow-hidden bg-neutral-50 rounded-lg group ${
+        className={`relative overflow-hidden bg-neutral-50 border border-neutral-300 rounded-lg group ${
           isFullscreen ? 'w-full h-full max-w-none max-h-none' : 'aspect-square'
         } ${isImage ? 'cursor-pointer' : ''}`}
         onClick={isVideo ? togglePlay : handleImageClick}
