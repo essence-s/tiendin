@@ -2,23 +2,28 @@
 
 import type React from 'react';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
-import Image from 'next/image';
+import type { ProductMedia } from '@/lib/types';
 import {
-  Play,
-  Pause,
-  Volume2,
-  VolumeX,
-  Maximize2,
-  Minimize2,
+  extractYouTubeVideoId,
+  getYouTubeEmbedUrl,
+  getYouTubeThumbnail,
+} from '@/lib/youtube-utils';
+import {
   ChevronLeft,
   ChevronRight,
   Loader2,
+  Maximize2,
+  Minimize2,
+  Pause,
+  Play,
+  RotateCcw,
+  Volume2,
+  VolumeX,
   ZoomIn,
   ZoomOut,
-  RotateCcw,
 } from 'lucide-react';
-import type { ProductMedia } from '@/lib/types';
+import Image from 'next/image';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface MediaViewerProps {
   media: ProductMedia[];
@@ -43,6 +48,10 @@ export default function MediaViewer({
   const [videoError, setVideoError] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
+  // YouTube states
+  const [youtubeLoaded, setYoutubeLoaded] = useState(false);
+  const [showYouTubePlayer, setShowYouTubePlayer] = useState(false);
+
   // Image zoom states
   const [imageZoom, setImageZoom] = useState(1);
   const [imagePosition, setImagePosition] = useState({ x: 0, y: 0 });
@@ -57,6 +66,13 @@ export default function MediaViewer({
 
   const currentMedia = media[selectedIndex];
   const isVideo = currentMedia?.type === 'video';
+  const isYouTube = currentMedia?.type === 'youtube';
+  const isImage = currentMedia?.type === 'image';
+
+  // Procesar video de YouTube
+  const youtubeVideoId =
+    isYouTube && currentMedia.url ? extractYouTubeVideoId(currentMedia.url) : null;
+  const youtubeThumbnail = youtubeVideoId ? getYouTubeThumbnail(youtubeVideoId, 'high') : null;
 
   // Reset states when media changes
   useEffect(() => {
@@ -66,21 +82,24 @@ export default function MediaViewer({
       setDuration(0);
       setVideoError(false);
       setIsLoading(true);
+    } else if (isYouTube) {
+      setShowYouTubePlayer(false);
+      setYoutubeLoaded(false);
     } else {
       // Reset image zoom when switching to image
       setImageZoom(1);
       setImagePosition({ x: 0, y: 0 });
     }
-  }, [selectedIndex, isVideo]);
+  }, [selectedIndex, isVideo, isYouTube]);
 
   // Update image controls visibility based on hover state
   useEffect(() => {
-    if (!isVideo) {
+    if (isImage) {
       setShowImageControls(isHoveringContainer);
     }
-  }, [isHoveringContainer, isVideo]);
+  }, [isHoveringContainer, isImage]);
 
-  // Video event listeners
+  // Video event listeners (solo para videos locales)
   useEffect(() => {
     if (isVideo && videoRef.current) {
       const video = videoRef.current;
@@ -90,7 +109,6 @@ export default function MediaViewer({
         const total = video.duration;
         setCurrentTime(current);
 
-        // Ensure progress bar reaches 100% when video ends
         if (current >= total - 0.1) {
           setCurrentTime(total);
         }
@@ -110,7 +128,7 @@ export default function MediaViewer({
 
       const handleEnded = () => {
         setIsPlaying(false);
-        setCurrentTime(video.duration); // Ensure it shows 100%
+        setCurrentTime(video.duration);
       };
 
       video.addEventListener('timeupdate', updateTime);
@@ -191,6 +209,12 @@ export default function MediaViewer({
     }
   };
 
+  // YouTube player handlers
+  const handleYouTubePlay = () => {
+    setShowYouTubePlayer(true);
+    setYoutubeLoaded(true);
+  };
+
   const nextMedia = () => {
     onIndexChange((selectedIndex + 1) % media.length);
   };
@@ -224,23 +248,21 @@ export default function MediaViewer({
   };
 
   const handleImageClick = (e: React.MouseEvent) => {
-    if (!isVideo && !isDragging) {
+    if (isImage && !isDragging) {
       e.stopPropagation();
 
-      // Check if click is on control buttons
       const target = e.target as HTMLElement;
       if (target.closest('button')) {
         return;
       }
 
-      // Zoom in on click
       handleZoomIn();
     }
   };
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
-      if (imageZoom > 1 && !isVideo) {
+      if (imageZoom > 1 && isImage) {
         setIsDragging(true);
         setDragStart({
           x: e.clientX - imagePosition.x,
@@ -248,7 +270,7 @@ export default function MediaViewer({
         });
       }
     },
-    [imageZoom, imagePosition, isVideo]
+    [imageZoom, imagePosition, isImage]
   );
 
   const handleMouseMove = useCallback(
@@ -257,7 +279,6 @@ export default function MediaViewer({
         const newX = e.clientX - dragStart.x;
         const newY = e.clientY - dragStart.y;
 
-        // Limit dragging to reasonable bounds
         const maxOffset = 100 * (imageZoom - 1);
         setImagePosition({
           x: Math.max(-maxOffset, Math.min(maxOffset, newX)),
@@ -274,11 +295,10 @@ export default function MediaViewer({
 
   const handleWheel = useCallback(
     (e: React.WheelEvent) => {
-      if (!isVideo) {
+      if (isImage) {
         e.preventDefault();
         e.stopPropagation();
 
-        // Solo hacer zoom si el mouse está dentro del área de la imagen
         const rect = containerRef.current?.getBoundingClientRect();
         if (rect) {
           const isInsideContainer =
@@ -297,13 +317,13 @@ export default function MediaViewer({
         }
       }
     },
-    [isVideo]
+    [isImage]
   );
 
   // Document wheel event listener
   useEffect(() => {
     const handleDocumentWheel = (e: WheelEvent) => {
-      if (!isVideo && containerRef.current) {
+      if (isImage && containerRef.current) {
         const rect = containerRef.current.getBoundingClientRect();
         const isInsideContainer =
           e.clientX >= rect.left &&
@@ -319,7 +339,7 @@ export default function MediaViewer({
 
     document.addEventListener('wheel', handleDocumentWheel, { passive: false });
     return () => document.removeEventListener('wheel', handleDocumentWheel);
-  }, [isVideo]);
+  }, [isImage]);
 
   // Container hover handlers
   const handleContainerMouseEnter = () => {
@@ -350,16 +370,94 @@ export default function MediaViewer({
       onMouseLeave={handleContainerMouseLeave}
     >
       <div
-        className={`relative overflow-hidden bg-neutral-50 rounded-lg group cursor-pointer ${
+        className={`relative overflow-hidden bg-neutral-50 rounded-lg group ${
           isFullscreen ? 'w-full h-full max-w-none max-h-none' : 'aspect-square'
-        }`}
+        } ${isImage ? 'cursor-pointer' : ''}`}
         onClick={isVideo ? togglePlay : handleImageClick}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onWheel={handleWheel}
       >
-        {isVideo ? (
+        {/* YouTube Video */}
+        {isYouTube && youtubeVideoId && (
+          <>
+            {!showYouTubePlayer ? (
+              // YouTube Thumbnail (Lazy Loading)
+              <div className="relative w-full h-full">
+                <Image
+                  src={youtubeThumbnail || '/placeholder.svg'}
+                  alt={currentMedia.alt}
+                  fill
+                  className={`object-cover ${isFullscreen ? 'object-contain' : ''}`}
+                  priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+
+                {/* Play Button Overlay */}
+                <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleYouTubePlay();
+                    }}
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center transition-colors"
+                    aria-label="Reproducir video de YouTube"
+                  >
+                    <Play className="w-8 h-8 text-white ml-1" />
+                    {/* <Play className="w-8 h-8 sm:w-10 sm:h-10 text-white ml-1" /> */}
+                  </button>
+                </div>
+
+                {/* YouTube Badge */}
+                {/* <div className="absolute top-4 right-4 bg-red-600 text-white px-2 py-1 rounded-full text-xs flex items-center space-x-1">
+                  <Youtube className="w-3 h-3" />
+                  <span>YouTube</span>
+                </div> */}
+
+                {/* Duration Badge */}
+                {currentMedia.duration && (
+                  <div className="absolute bottom-4 right-4 bg-black/70 text-white px-2 py-1 rounded text-xs">
+                    {formatTime(currentMedia.duration)}
+                  </div>
+                )}
+              </div>
+            ) : (
+              // YouTube Embed Player
+              <div className="relative w-full h-full">
+                <iframe
+                  src={getYouTubeEmbedUrl(youtubeVideoId, {
+                    autoplay: true,
+                    controls: true,
+                    modestbranding: true,
+                    rel: false,
+                    showinfo: false,
+                  })}
+                  title={currentMedia.alt}
+                  className="w-full h-full border-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  loading="lazy"
+                />
+
+                {/* Close YouTube Player Button */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowYouTubePlayer(false);
+                  }}
+                  className="absolute top-2 right-2 w-8 h-8 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center transition-colors z-10"
+                  aria-label="Cerrar reproductor de YouTube"
+                >
+                  <ChevronLeft className="w-4 h-4 text-white rotate-90" />
+                </button>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Local Video */}
+        {isVideo && (
           <>
             <video
               ref={videoRef}
@@ -494,9 +592,11 @@ export default function MediaViewer({
               </div>
             )}
           </>
-        ) : (
+        )}
+
+        {/* Image */}
+        {isImage && (
           <>
-            {/* Image with zoom */}
             <div
               ref={imageRef}
               className="w-full h-full relative overflow-hidden"
@@ -573,7 +673,7 @@ export default function MediaViewer({
         )}
 
         {/* Navigation Arrows */}
-        {media.length > 1 && (
+        {media.length > 1 && !showYouTubePlayer && (
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
             <button
               onClick={(e) => {
@@ -599,19 +699,19 @@ export default function MediaViewer({
         )}
 
         {/* Media Type Indicator */}
-        {isVideo && (
+        {(isVideo || isYouTube) && !showYouTubePlayer && (
           <div className="absolute top-4 left-4">
             <div className="bg-black/70 text-white px-2 py-1 rounded-full text-xs flex items-center space-x-1">
               <Play className="w-3 h-3" />
               <span>Video</span>
-              {duration > 0 && <span>({formatTime(duration)})</span>}
+              {currentMedia.duration && <span>({formatTime(currentMedia.duration)})</span>}
             </div>
           </div>
         )}
       </div>
 
       {/* Instructions for image zoom */}
-      {!isVideo && showImageControls && imageZoom === 1 && (
+      {isImage && showImageControls && imageZoom === 1 && (
         <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-3 py-1 rounded-full text-xs whitespace-nowrap">
           Click, rueda del mouse o botones para hacer zoom
         </div>

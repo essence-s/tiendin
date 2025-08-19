@@ -11,7 +11,17 @@ export interface ProductVideo {
   duration?: number; // in seconds
 }
 
-export type ProductMedia = ProductImage | ProductVideo;
+export interface ProductYouTubeVideo {
+  url: string; // YouTube URL (cualquier formato)
+  videoId?: string; // Se extraerá automáticamente
+  thumbnail?: string; // Se generará automáticamente si no se proporciona
+  alt: string;
+  type: 'youtube';
+  title?: string;
+  duration?: number; // in seconds
+}
+
+export type ProductMedia = ProductImage | ProductVideo | ProductYouTubeVideo;
 
 export interface ProductDimensions {
   width_cm: number;

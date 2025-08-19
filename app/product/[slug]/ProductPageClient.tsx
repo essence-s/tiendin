@@ -5,9 +5,9 @@ import MediaViewer from '@/components/MediaViewer';
 import ProductCard from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/lib/cart-context';
-import { formatPriceWithCurrency, getCurrentCurrency } from '@/lib/currency';
+import { formatPriceWithCurrency } from '@/lib/currency';
 import { useProducts } from '@/lib/products-context';
-import { Product, ProductImage, ProductMedia, ProductVideo } from '@/lib/types';
+import { Product, ProductImage, ProductMedia, ProductYouTubeVideo } from '@/lib/types';
 import { ArrowLeft, ChevronDown, Heart, Minus, Plus, Share2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -58,11 +58,11 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
       type: 'image',
       alt: product.name,
     })),
-    ...product?.videos.map<ProductVideo>((video) => ({
+    ...product?.videos.map<ProductYouTubeVideo>((video) => ({
       url: video,
-      thumbnail: product.images[0],
+      // thumbnail: product.images[0],
       alt: product.name + 'video',
-      type: 'video',
+      type: 'youtube',
       // duration: 10,
     })),
   ];
@@ -187,7 +187,7 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-neutral-500">Efecto:</span>
-                    <span className="text-neutral-900">3D flip</span>
+                    <span className="text-neutral-900">{product.effect}</span>
                   </div>
                   {/* <div className="flex justify-between">
                     <span className="text-neutral-500">Effect:</span>
@@ -220,7 +220,7 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-neutral-500">Efecto:</span>
-                  <span className="text-neutral-900">3D flip</span>
+                  <span className="text-neutral-900">{product.effect}</span>
                 </div>
                 {/* <div className="flex justify-between">
                   <span className="text-neutral-500">Effect:</span>
