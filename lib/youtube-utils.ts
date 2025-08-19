@@ -3,23 +3,30 @@
  */
 
 // Extraer ID de video de YouTube de diferentes formatos de URL
+// export function extractYouTubeVideoId(url: string): string | null {
+//   const patterns = [
+//     /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+//     /youtube\.com\/watch\?.*v=([^&\n?#]+)/,
+//     /youtube\.com\/v\/([^&\n?#]+)/,
+//     /youtube\.com\/embed\/([^&\n?#]+)/,
+//     /youtu\.be\/([^&\n?#]+)/,
+//   ];
+
+//   for (const pattern of patterns) {
+//     const match = url.match(pattern);
+//     if (match && match[1]) {
+//       return match[1];
+//     }
+//   }
+
+//   return null;
+// }
+// Extraer ID de video de YouTube de diferentes formatos de URL
 export function extractYouTubeVideoId(url: string): string | null {
-  const patterns = [
-    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
-    /youtube\.com\/watch\?.*v=([^&\n?#]+)/,
-    /youtube\.com\/v\/([^&\n?#]+)/,
-    /youtube\.com\/embed\/([^&\n?#]+)/,
-    /youtu\.be\/([^&\n?#]+)/,
-  ];
-
-  for (const pattern of patterns) {
-    const match = url.match(pattern);
-    if (match && match[1]) {
-      return match[1];
-    }
-  }
-
-  return null;
+  const regex =
+    /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=|embed\/|v\/|shorts\/)?([^&\n?#]{11})/;
+  const match = url.match(regex);
+  return match ? match[1] : null;
 }
 
 // Generar URL de thumbnail de YouTube
