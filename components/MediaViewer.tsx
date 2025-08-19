@@ -512,7 +512,7 @@ export default function MediaViewer({
                 src={currentMedia.url || '/placeholder.svg'}
                 alt={currentMedia.alt}
                 fill
-                className="object-cover select-none"
+                className="object-contain select-none"
                 priority
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 draggable={false}
