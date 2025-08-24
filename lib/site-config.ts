@@ -61,6 +61,7 @@ export interface Link {
 
 export interface SocialMedia {
   tiktok: Link;
+  youtube: Link;
 }
 
 export interface Homepage {
