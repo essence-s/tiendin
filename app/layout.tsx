@@ -5,44 +5,43 @@ import { CartProvider } from '@/lib/cart-context';
 import { getCurrentCurrency } from '@/lib/currency';
 import MainLayout from '@/layouts/MainLayout';
 import { ProductsProvider } from '@/lib/products-context';
+import { getSEOConfig } from '@/lib/site-config';
 
 const inter = Inter({ subsets: ['latin'] });
 
+const SEOConfig = getSEOConfig();
+
 export const metadata: Metadata = {
   title: {
-    default: 'Print Store - Láminas decorativas de alta calidad',
-    template: '%s | Print Store',
+    default: SEOConfig.defaultTitle,
+    template: SEOConfig.titleTemplate,
   },
-  description:
-    'Descubre nuestra colección de láminas decorativas con efectos 3D y diseños modernos. Arte para pared de alta calidad con impresión profesional.',
-  keywords:
-    'láminas decorativas, arte para pared, decoración hogar, impresión alta calidad, láminas 3D, diseño moderno, papel fotográfico',
-  authors: [{ name: 'Print Store' }],
-  creator: 'Print Store',
-  publisher: 'Print Store',
+  description: SEOConfig.defaultDescription,
+  keywords: SEOConfig.keywords,
+  authors: [{ name: SEOConfig.author }],
+  creator: SEOConfig.author,
+  publisher: SEOConfig.author,
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://printstore.com'),
+  metadataBase: new URL('https://syhc.vercel.app'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'es_PE',
-    url: 'https://printstore.com',
-    title: 'Print Store - Láminas decorativas de alta calidad',
-    description:
-      'Descubre nuestra colección de láminas decorativas con efectos 3D y diseños modernos.',
-    siteName: 'Print Store',
+    url: 'https://syhc.vercel.app',
+    title: SEOConfig.defaultTitle,
+    description: SEOConfig.defaultDescription,
+    siteName: SEOConfig.author,
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Print Store - Láminas decorativas de alta calidad',
-    description:
-      'Descubre nuestra colección de láminas decorativas con efectos 3D y diseños modernos.',
+    title: SEOConfig.defaultTitle,
+    description: SEOConfig.defaultDescription,
     creator: '@printstore',
   },
   robots: {
@@ -67,7 +66,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es">
       <head>
-        <link rel="canonical" href="https://printstore.com" />
+        <link rel="canonical" href="https://syhc.vercel.app" />
         <meta name="currency" content={currency.code} />
       </head>
       <body className={inter.className}>
